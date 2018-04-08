@@ -1,61 +1,101 @@
 import * as React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import {View, StyleSheet, Dimensions, StatusBar} from 'react-native';
 import {DeckListScreen} from "./src/screens/decks/DeckList/DeckList";
 import colors from "./src/utils/colors";
-import { Constants } from 'expo';
+import {Constants} from 'expo';
 import {AddNewDeckScreen} from "./src/screens/decks/AddNewDeck/AddNewDeck";
+import * as Platform from "react-native";
+import { TabNavigator, StackNavigator } from 'react-navigation';
+import {DeckDetailScreen} from "./src/screens/decks/DeckDetail/DeckDetail";
+import {QuizScreen} from "./src/screens/cards/Quiz/Quiz";
+import {AddNewCardScreen} from "./src/screens/cards/AddNewCard/AddNewCard";
 
-const initialLayout = {
-    height: 0,
-    width: Dimensions.get('window').width,
-};
+const AppStatusBar = () => (
+    <View style={{height: Constants.statusBarHeight}}>
+        <StatusBar/>
+    </View>
+);
 
-const FirstRoute = () => <DeckListScreen/>;
-const SecondRoute = () => <AddNewDeckScreen/>;
+const Tabs = TabNavigator({
+    DeckList: {
+        screen: DeckListScreen,
+        navigationOptions: {
+            tabBarLabel: 'Decks',
+            tabBarIcon: ({tintColor}) => <MaterialCommunityIcons name='cards-outline' size={30} color={tintColor}/>,
+        },
+    },
+    AddNewDeck: {
+        screen: AddNewDeckScreen,
+        navigationOptions: {
+            tabBarLabel: 'New Deck',
+            tabBarIcon: ({tintColor}) => <Feather name='plus-square' size={25} color={tintColor}/>
+        },
+    }
+}, {
+    tabBarOptions: {
+        activeTintColor: colors.light,
+        inactiveTintColor: colors.light,
+        activeBackgroundColor: colors.light,
+        indicatorStyle: {
+            borderBottomColor: colors.danger,
+            borderBottomWidth: 2,
+            backgroundColor: colors.transparent,
+        },
+        style: {
+            paddingTop: Platform.OS === 'ios' ? 0 : 20,
+            backgroundColor: colors.light,
+            shadowColor: colors.shadow,
+            shadowOffset: {
+                width: 0,
+                height: 3
+            },
+            shadowRadius: 6,
+            shadowOpacity: 1
+        }
+    }
+});
 
-export default class TabViewExample extends React.Component {
-    state = {
-        index: 0,
-        routes: [
-            { key: 'decks', title: 'Decks' },
-            { key: 'newDeck', title: 'New Decks' },
-        ],
-    };
+const MainNavigator = StackNavigator({
+    Home: {
+        screen: Tabs,
+        navigationOptions: {
+            header: null,
+        }
+    },
+    DeckDetail: {
+        screen: DeckDetailScreen,
+        navigationOptions: {
+            headerStyle: {
+                paddingTop: 0,
+            }
+        }
+    },
+    Quiz: {
+        screen: QuizScreen,
+    },
+    AddNewCard: {
+        screen: AddNewCardScreen,
+    },
+});
 
-    _handleIndexChange = index => this.setState({ index });
-
-    _renderHeader = props => <TabBar
-        {...props}
-        style={styles.tabs}
-        labelStyle={styles.label}
-    />;
-
-    _renderScene = SceneMap({
-        decks: FirstRoute,
-        newDeck: SecondRoute,
-    });
+export default class App extends Component {
+    componentDidMount() {
+    }
 
     render() {
         return (
-            <TabViewAnimated
-                navigationState={this.state}
-                renderScene={this._renderScene}
-                renderHeader={this._renderHeader}
-                onIndexChange={this._handleIndexChange}
-                initialLayout={initialLayout}
-            />
+            <View style={styles.container}>
+                <AppStatusBar/>
+                <MainNavigator ref={nav => {
+                    this.navigator = nav;
+                }}/>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    tabs: {
-        backgroundColor: colors.light,
-        marginTop: Constants.statusBarHeight,
-        borderBottomWidth: 0
-    },
-    label: {
-        color: colors.primary
+    container: {
+        flex: 1
     }
 });
