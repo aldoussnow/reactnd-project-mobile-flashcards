@@ -1,67 +1,67 @@
 import React from 'react';
-import { Component } from 'react';
+import {Component} from 'react';
 import {View, Text, StyleSheet, TextInput, TouchableHighlight} from 'react-native';
-import colors from "../../../utils/colors";
+import colors from '../../../utils/colors';
+import {connect} from 'react-redux';
+import {addDeck} from '../../../store/actions';
+import {InputComponent} from '../../../components/input.component';
+import {ButtonComponent} from '../../../components/button.component';
+import * as screens from '../../../utils/screens-names'
 
-export class AddNewDeckScreen extends Component {
+class AddNewDeckScreen extends Component {
 
     constructor(props) {
         super(props);
     }
 
-    state = { deckTitle: '', defaultValue: 'Deck title' };
+    state = {deckTitle: '', defaultValue: 'Deck title', errorMessage: ''};
 
     render = () => <View style={styles.container}>
         <Text style={styles.information}>What is the title of your deck?</Text>
-        <TextInput
-            style={styles.input}
+        <InputComponent
+            onChange={(value) => this.setState({deckTitle: value, errorMessage: ''})}
+            value={this.state.deckTitle}
             placeholder={this.state.defaultValue}
-            onChangeText={(text) => this.setState({deckTitle: text})}
-            value={this.state.deckTitle}/>
-        <TouchableHighlight
-            style={styles.button}
-            onPress={this.onPress}>
-            <Text
-                style={styles.buttonText}>
-                Submit
-            </Text>
-        </TouchableHighlight>
+            errorMessage={this.state.errorMessage}
+            additionalStyles={this.state.errorMessage.length > 0 ? {input: {borderColor: colors.danger}} : {}} />
+        <ButtonComponent
+            onPress={this.onPress}
+            buttonText={'Submit'} />
     </View>;
 
-    onPress = () => console.log('hallo')
+    onPress = () => {
+        if (this.state.deckTitle !== '') {
+            const newDeck = {title: this.state.deckTitle, questions: []};
+            const {navigate} = this.props.navigation;
+            this.props.addDeck(newDeck);
+            navigate(screens.ADD_NEW_CARD, {title: this.state.deckTitle, questions: []});
+            this.setState({deckTitle: ''});
+        } else {
+            this.setState({errorMessage: 'Please fill in a title for your deck, before submitting'});
+        }
+    };
+
 }
 
 const styles = StyleSheet.create({
-    container: {},
+    container: {
+        backgroundColor: colors.light,
+        flex: 1
+    },
     information: {
         fontSize: 60,
         textAlign: 'center',
         marginTop: 30
-    },
-    input: {
-        height: 40,
-        borderColor: colors.primary,
-        borderWidth: 1,
-        marginTop: 30,
-        marginLeft: 15,
-        marginRight: 15,
-        borderRadius: 5,
-        paddingLeft: 10,
-        paddingRight: 10
-    },
-    button: {
-        backgroundColor: colors.primary,
-        marginTop: 30,
-        marginLeft: '30%',
-        marginRight: 15,
-        borderRadius: 5,
-        padding: 10,
-        width: '40%',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    buttonText: {
-        color: colors.light,
-        textAlign: 'center'
     }
 });
+
+function mapDispatchToProps(dispatch) {
+    return {
+        addDeck: (newDeck) => dispatch(addDeck(newDeck))
+    }
+}
+
+export default connect(
+    undefined,
+    mapDispatchToProps
+)(AddNewDeckScreen);

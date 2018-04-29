@@ -4,6 +4,7 @@ export default {
     danger:     '#f53d3d',
     light:      '#ffffff',
     dark:       '#222',
+    orange:     '#ffa500',
     success:    '#28a745',
     lightGray:  '#F9F9F9',
     transparent: 'transparent',

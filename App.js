@@ -1,17 +1,21 @@
 import * as React from 'react';
-import {View, StyleSheet, Dimensions, StatusBar} from 'react-native';
-import {DeckListScreen} from "./src/screens/decks/DeckList/DeckList";
+import {View, StyleSheet, Dimensions, StatusBar, KeyboardAvoidingView} from 'react-native';
+import DeckListScreen from "./src/screens/decks/DeckList/DeckList";
 import colors from "./src/utils/colors";
 import {Constants} from 'expo';
-import {AddNewDeckScreen} from "./src/screens/decks/AddNewDeck/AddNewDeck";
-import * as Platform from "react-native";
-import { TabNavigator, StackNavigator } from 'react-navigation';
-import {DeckDetailScreen} from "./src/screens/decks/DeckDetail/DeckDetail";
+import AddNewDeckScreen from "./src/screens/decks/AddNewDeck/AddNewDeck";
+import {Platform} from "react-native";
+import {TabNavigator, StackNavigator} from 'react-navigation';
+import DeckDetailScreen from "./src/screens/decks/DeckDetail/DeckDetail";
 import {QuizScreen} from "./src/screens/cards/Quiz/Quiz";
-import {AddNewCardScreen} from "./src/screens/cards/AddNewCard/AddNewCard";
+import AddNewCardScreen from "./src/screens/cards/AddNewCard/AddNewCard";
+import {store} from "./src/store/configureStore";
+import {Provider} from "react-redux";
+import {MaterialCommunityIcons, Feather} from '@expo/vector-icons';
+
 
 const AppStatusBar = () => (
-    <View style={{height: Constants.statusBarHeight}}>
+    <View style={{height: Constants.statusBarHeight, backgroundColor: colors.dark}}>
         <StatusBar/>
     </View>
 );
@@ -33,8 +37,8 @@ const Tabs = TabNavigator({
     }
 }, {
     tabBarOptions: {
-        activeTintColor: colors.light,
-        inactiveTintColor: colors.light,
+        activeTintColor: colors.dark,
+        inactiveTintColor: colors.dark,
         activeBackgroundColor: colors.light,
         indicatorStyle: {
             borderBottomColor: colors.danger,
@@ -63,39 +67,36 @@ const MainNavigator = StackNavigator({
         }
     },
     DeckDetail: {
-        screen: DeckDetailScreen,
-        navigationOptions: {
-            headerStyle: {
-                paddingTop: 0,
-            }
-        }
+        screen: DeckDetailScreen
     },
     Quiz: {
-        screen: QuizScreen,
+        screen: QuizScreen
     },
     AddNewCard: {
         screen: AddNewCardScreen,
-    },
+    }
 });
 
-export default class App extends Component {
-    componentDidMount() {
-    }
+export default class App extends React.Component {
+    componentDidMount() {}
 
     render() {
         return (
-            <View style={styles.container}>
-                <AppStatusBar/>
-                <MainNavigator ref={nav => {
-                    this.navigator = nav;
-                }}/>
-            </View>
+            <Provider store={store}>
+                <KeyboardAvoidingView style={styles.container} behaviour={'padding'}>
+                    <AppStatusBar/>
+                    <MainNavigator ref={nav => {
+                        this.navigator = nav;
+                    }}/>
+                </KeyboardAvoidingView>
+            </Provider>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: colors.light
     }
 });

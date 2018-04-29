@@ -1,5 +1,5 @@
-import * as reducer from './reducers';
-import applyMiddleware from "redux/es/applyMiddleware";
+import { createStore, applyMiddleware } from 'redux';
+import reducer from './reducers';
 import {logger} from "redux-logger";
 
 export const store = createStore(

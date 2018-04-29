@@ -1,4 +1,4 @@
-import {ADD_CARD_TO_DECK, ADD_DECK, RECEIVE_DECKS} from "./types";
+import {ADD_CARD_TO_DECK, ADD_DECK, RECEIVE_DECKS} from './types';
 
 export function receiveDecks (decks) {
     return {

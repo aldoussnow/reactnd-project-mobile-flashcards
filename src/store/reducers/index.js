@@ -1,12 +1,10 @@
-import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 import {
     RECEIVE_DECKS,
     ADD_DECK,
     ADD_CARD_TO_DECK,
 } from '../actions/index';
 
-function decksReducers (state = {}, action) {
+function reducers (state = {}, action) {
     switch(action.type) {
         case RECEIVE_DECKS:
             return {
@@ -37,4 +35,4 @@ function decksReducers (state = {}, action) {
     }
 }
 
-export default decksReducers;
+export default reducers;
