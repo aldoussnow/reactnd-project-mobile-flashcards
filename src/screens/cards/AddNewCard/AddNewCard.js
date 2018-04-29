@@ -33,35 +33,38 @@ class AddNewCardScreen extends Component {
         super(props);
     }
 
-    render = () => (
-        <View style={styles.container}>
-            <Text style={styles.information}>Please add a card</Text>
-            <InputComponent
-                onChange={(question) => this.handleChange(question, 'question')}
-                value={this.state.question}
-                placeholder={'Add Question'}
-                errorMessage={this.state.errorMessages.question}
-                additionalStyles={this.state.errorMessages.question.length > 0 ? {input: {borderColor: colors.danger}} : {}}
-            />
-            <InputComponent
-                onChange={(answer) => this.handleChange(answer, 'answer')}
-                value={this.state.answer}
-                placeholder={'Add answer'}
-                errorMessage={this.state.errorMessages.answer}
-                additionalStyles={this.state.errorMessages.answer.length > 0 ? {input: {borderColor: colors.danger}} : {}}
-            />
-            <ButtonComponent
-                onPress={this.onPress}
-                buttonText={'Submit'}/>
-            <ConfirmModalComponent
-                isVisible={this.state.modalVisible}
-                infoText={'Do you want to start to play or add another card'}
-                onPressConfirm={this.onConfirmModal}
-                confirmText={'Start to play'}
-                onPressCancel={this.onCancelModal}
-                cancelText={'Add another card'} />
-        </View>
-    );
+    render = () => {
+        const {question, errorMessages, answer, modalVisible} = this.state;
+        return (
+            <View style={styles.container}>
+                <Text style={styles.information}>Please add a card</Text>
+                <InputComponent
+                    onChange={(question) => this.handleChange(question, 'question')}
+                    value={question}
+                    placeholder={'Add Question'}
+                    errorMessage={errorMessages.question}
+                    additionalStyles={errorMessages.question.length > 0 ? {input: {borderColor: colors.danger}} : {}}
+                />
+                <InputComponent
+                    onChange={(answer) => this.handleChange(answer, 'answer')}
+                    value={answer}
+                    placeholder={'Add answer'}
+                    errorMessage={errorMessages.answer}
+                    additionalStyles={errorMessages.answer.length > 0 ? {input: {borderColor: colors.danger}} : {}}
+                />
+                <ButtonComponent
+                    onPress={this.onPress}
+                    buttonText={'Submit'}/>
+                <ConfirmModalComponent
+                    isVisible={modalVisible}
+                    infoText={'Do you want to start to play or add another card'}
+                    onPressConfirm={this.onConfirmModal}
+                    confirmText={'Start to play'}
+                    onPressCancel={this.onCancelModal}
+                    cancelText={'Add another card'} />
+            </View>
+        );
+    };
 
     onPress = ()=> {
         const {answer, question} = this.state;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import {View, StyleSheet, Dimensions, StatusBar, KeyboardAvoidingView} from 'react-native';
 import DeckListScreen from "./src/screens/decks/DeckList/DeckList";
 import colors from "./src/utils/colors";
@@ -12,6 +12,8 @@ import AddNewCardScreen from "./src/screens/cards/AddNewCard/AddNewCard";
 import {store} from "./src/store/configureStore";
 import {Provider} from "react-redux";
 import {MaterialCommunityIcons, Feather} from '@expo/vector-icons';
+import {setLocalNotification} from "./src/utils";
+import {clearLocalNotifications} from "./src/utils/helpers";
 
 
 const AppStatusBar = () => (
@@ -37,7 +39,7 @@ const Tabs = TabNavigator({
     }
 }, {
     tabBarOptions: {
-        activeTintColor: colors.dark,
+        activeTintColor: colors.danger,
         inactiveTintColor: colors.dark,
         activeBackgroundColor: colors.light,
         indicatorStyle: {
@@ -77,8 +79,10 @@ const MainNavigator = StackNavigator({
     }
 });
 
-export default class App extends React.Component {
-    componentDidMount() {}
+export default class App extends Component {
+    componentDidMount() {
+        clearLocalNotifications().then(setLocalNotification());
+    }
 
     render() {
         return (

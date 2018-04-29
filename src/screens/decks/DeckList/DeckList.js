@@ -12,10 +12,6 @@ import {ButtonComponent} from '../../../components/button.component';
 
 class DeckListScreen extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render = () => {
         const {decks} = this.props;
         return (<View style={styles.container}>
@@ -40,6 +36,7 @@ class DeckListScreen extends Component {
     renderItem = ({item}) => {
         return (
             <DeckListComponent
+                key={item.title}
                 item={item}
                 onPress={() => this.navigateToDeckDetail(item)}/>
         );

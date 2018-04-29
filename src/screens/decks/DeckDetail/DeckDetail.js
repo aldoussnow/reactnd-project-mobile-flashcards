@@ -16,10 +16,6 @@ export default class DeckDetailScreen extends Component {
         }
     });
 
-    constructor(props) {
-        super(props);
-    }
-
     render = () => {
         const {deck} = this.props.navigation.state.params;
         return deck ? (

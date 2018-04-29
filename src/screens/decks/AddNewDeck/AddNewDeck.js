@@ -34,7 +34,7 @@ class AddNewDeckScreen extends Component {
             const newDeck = {title: this.state.deckTitle, questions: []};
             const {navigate} = this.props.navigation;
             this.props.addDeck(newDeck);
-            navigate(screens.ADD_NEW_CARD, {title: this.state.deckTitle, questions: []});
+            navigate(screens.DECK_DETAIL, {deck: newDeck});
             this.setState({deckTitle: ''});
         } else {
             this.setState({errorMessage: 'Please fill in a title for your deck, before submitting'});

@@ -14,3 +14,6 @@ React Nanodegree Mobile-Flashcards (React-Native, Redux, Expo, Yarn Project)
 ### Purpose of this project
 
 The project is for showcasing React-Native and Redux abilities. For design and styling please check another one of my repos.
+
+## Notes
+Find more information on expo here https://docs.expo.io/

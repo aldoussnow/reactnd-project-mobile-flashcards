@@ -4,13 +4,13 @@ import colors from '../../../../utils/colors';
 
 
 export function DeckListComponent({item, onPress}) {
-    return (<View style={styles.renderItem}>
+    return item && item.questions ? (<View style={styles.renderItem}>
         <TouchableOpacity onPress={onPress}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.cardCount}>{`${item.questions.length} cards`}</Text>
             <View style={styles.border}/>
         </TouchableOpacity>
-    </View>);
+    </View>) : <View></View>;
 }
 
 const styles = StyleSheet.create({
